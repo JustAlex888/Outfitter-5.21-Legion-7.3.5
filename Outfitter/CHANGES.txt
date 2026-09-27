@@ -1,0 +1,18 @@
+tag b3c564337072eecf731584d97fabbd0bd0c1b6ed 5.21
+Author:	John Stephen <john@wobbleworks.com>
+Date:	Sun Oct 21 15:31:18 2018 -0700
+
+5.21
+
+commit aa747e0a948f6ca4af85d8368355b11442815adf
+Author: John Stephen <john@wobbleworks.com>
+Date:   Sun Oct 21 15:31:06 2018 -0700
+
+    5.21
+
+commit fc452d80bb3a588f77f721a580d276a321be3c42
+Author: John Stephen <john@wobbleworks.com>
+Date:   Sun Oct 21 15:30:35 2018 -0700
+
+    Fixed shapeshift/stealth handling for expansion 8.0
+

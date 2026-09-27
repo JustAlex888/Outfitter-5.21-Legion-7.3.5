@@ -1,0 +1,129 @@
+Outfitter 5.21 - Legion 7.3.5 compatibility release 1.0.0
+Build ID: OF521L-20260927-01
+
+Upstream: Outfitter 5.21 by John Stephen (Mundocani)
+Upstream source: official Mundocani/Outfitter tag 5.21
+Upstream license: MIT (LICENSE preserved unchanged)
+Target: World of Warcraft Legion 7.3.5 / Interface 70300
+Status: RELEASE PACKAGE PREPARED / PUBLICATION PENDING FINAL SCREENSHOTS + FINAL ERROR CHECK
+
+Release 1.0.0 summary:
+- Final code baseline is the user-tested 0.4.5-test branch.
+- No gameplay/UI behavior was changed for 1.0.0; only release metadata and documentation were updated.
+- User-confirmed runtime coverage includes outfit switching, independent accessory/trinket sets, independent bars and settings, RU/EN UI switching, author tabs, and bar-settings UX.
+- Publication remains gated on final screenshot packaging and a final clean error review.
+
+Compatibility changes:
+- Interface metadata returned to 70300 while retaining 5.21 code/layout.
+- Added compatibility for Legion legacy map APIs where 5.21 uses C_Map.
+- Re-enabled 5.21's own legacy zone-name map, which is present but commented in upstream 5.21.
+- Adapted GetShapeshiftFormInfo handling to Legion's return signature with safe texture fallback.
+- Added C_Calendar -> CalendarGetDate fallback in the bundled MC2 UI library.
+- Preserved 5.21 Equipment Manager fixes and MC2EventLib v2/custom-event handling.
+- Added malformed title-name guard for the confirmed Legion/private-server GetSortedTitles failure.
+
+Project features carried forward:
+- Outfit Bar specialization filter; display-only, never auto-equips gear.
+- Missing/empty OutfitBar.Specializations means all specializations.
+- Specialization assignments persist in existing SavedVariables structure.
+- Expanded ruRU localization.
+
+Intentionally unchanged:
+- addon folder name: Outfitter
+- SavedVariables: gOutfitter_Settings / gOutfitter_GlobalSettings
+- slash commands and profile/settings architecture
+- upstream copyright notices and MIT LICENSE
+
+Required in-game test:
+1. Replace only Interface\AddOns\Outfitter. Do not delete WTF/SavedVariables.
+2. Confirm addon loads on Legion 7.3.5 without Lua errors.
+3. Check complete outfit context menu and title menu.
+4. Assign Blood/Frost/Unholy filters and switch specs.
+5. Confirm filtering changes only Outfit Bar visibility and never auto-equips.
+6. /reload and relog; confirm assignments persist.
+7. Check BugGrabber for new Outfitter errors.
+8. Smoke-test map/zone-dependent scripts and shapeshift handling if available.
+
+
+New in 0.2.0-test:
+- Added a dedicated Accessories set type containing only Trinket0Slot and Trinket1Slot.
+- Added a separate "New Accessories" / "Набор аксессуаров" creation button.
+- Only the two trinket slot controls are enabled when editing an Accessories set.
+- Only one Accessories set can be active at a time.
+- Clicking the active Accessories set again removes the overlay and restores trinkets from the underlying complete outfit.
+- Equipping a Complete outfit clears the Accessories overlay, preserving normal Outfitter stack semantics.
+- Accessories appear as a distinct smaller group on Outfit Bar.
+- Legacy partial outfits remain supported and are relabeled "Partial outfits" / "Частичные комплекты".
+- ruRU "Всякая всячина" is renamed to "Вещи, не входящие ни в один комплект".
+
+Compatibility note:
+- Existing SavedVariables are not migrated or deleted. Legacy partial outfits remain intact.
+- The new per-outfit field is OutfitType = "TrinketSet" only for newly created Accessories sets.
+
+
+New in 0.2.1-test:
+1. Legacy partial outfits remain preserved in SavedVariables but are hidden from the normal user-facing category list.
+2. The Outfitter main panel is widened for Russian labels and the "New Accessories" button.
+3. Existing trinket-set behavior from 0.2.0-test is unchanged.
+
+
+New in 0.3.0-test:
+1. Accessory/trinket sets are removed from the main Outfit Bar and rendered on a separate independent bar.
+2. The accessory bar has its own SavedVariables position (`AccessoryBar.Position`) and can be dragged independently.
+3. Accessory bar size defaults to 80% of the normal Outfit Bar button size.
+4. Existing equip/toggle semantics are unchanged: one trinket set overlays the complete outfit; clicking it again restores the base trinkets.
+5. The legacy partial-outfit category remains hidden but preserved in SavedVariables.
+
+
+New in 0.3.1-test:
+1. Fixed a WoW Lua 5.1 parser ambiguity in OutfitBar button OnEnter/OnLeave introduced by the separate Accessory Bar change.
+2. The fix restores Outfitter.OutfitBar initialization; the observed nil-OutfitBar and missing GetItems errors were downstream effects of the failed initialization and are not separately patched.
+3. No equip/toggle/SavedVariables semantics were changed.
+
+New in 0.3.2-test:
+1. Fixed AccessoryBar controller isolation: runtime state no longer falls through to the main OutfitBar via metatable inheritance.
+2. Outfit Bar and Accessory Bar now have independent visibility settings.
+3. Added Options checkbox: Show accessory bar / Показывать панель аксессуаров.
+4. Toggling the main outfit bar no longer shows/hides the accessory bar.
+5. Preserves AccessoryBar position from 0.3.0/0.3.1 and adds independent ShowAccessoryBar migration default.
+6. Added /outfitter reset accessorybar to reset only the accessory bar position.
+
+
+New in 0.4.0-test:
+1. Preserves the original animated Outfitter credits page unchanged in behavior, but renames its tab to Outfitter Authors / Авторы Outfitter.
+2. Adds a separate static Patch Author / Автор патча tab for compatibility-project attribution.
+3. Patch page credits JustAlex888 only for the 2026 compatibility patch/modifications and separately preserves John Stephen / Mundocani as original Outfitter author.
+4. Patch page identifies official Outfitter 5.21 upstream and original MIT license.
+5. Adds localization-test command: /outfitter lang en, /outfitter lang ru, /outfitter lang auto. The command stores only a UI test-language override and reloads the UI; it does not change the WoW client locale.
+6. Added English and Russian strings for the new tabs/page and audited project-added user-facing strings used by the current UI.
+
+New in 0.4.1-test:
+1. Author tabs visual polish only.
+   - "Patch Author / Автор патча" and "Outfitter Authors / Авторы Outfitter" are taller than the standard tabs.
+   - Their top edge stays aligned with Settings/Outfits while the extra height extends downward.
+   - Two-line author-tab text uses a slightly smaller font for better fit.
+   - Settings and Outfits tabs are unchanged.
+2. No equipment, SavedVariables, localization-selection, accessory-bar, or outfit-bar behavior changed.
+
+
+New in 0.4.3-test:
+1. Author-tab labels are raised 6 UI units inside the taller author tabs; tab size itself is unchanged from 0.4.1-test.
+2. Dropdown localization audit: outfit context menus no longer use client-localized Blizzard PET_RENAME/DELETE labels when an Outfitter language override is active.
+3. Rename/Delete now follow Outfitter's selected UI language in both the main list and both outfit/accessory bars.
+4. In explicit English override mode, specialization submenu names use an English specialization-ID map instead of the ruRU client's localized specialization names.
+5. Player-created outfit names, item names and player titles remain game/user data and are not translated by the Outfitter UI-language override.
+
+New in 0.4.4-test:
+1. Author-tab FontStrings now explicitly allow two rendered lines without changing Blizzard tab-button/highlight geometry.
+2. Only the selected author-tab label receives the small upward offset; inactive/hover states remain standard.
+3. Accessory Bar default scale is now 100%, matching the normal Outfit Bar; the previous project default 80% is migrated once unless a different user scale was already chosen.
+4. Accessory Bar now has the same independent right-click settings dialog as the main Outfit Bar: size, opacity, combat opacity, vertical layout, position lock and background toggle.
+5. The settings dialog implementation is controller-bound, so changing Accessory Bar settings cannot change the main Outfit Bar and vice versa.
+6. No outfit/accessory equip semantics, language-selection logic, author-page content or upstream attribution changed.
+
+New in 0.4.5-test:
+1. Outfit Bar and Accessory Bar settings dialogs now close when the user clicks outside the dialog.
+2. The opening right-click is explicitly ignored so the dialog does not close immediately after opening.
+3. Clicking sliders/checkbuttons inside the dialog does not close it, and slider dragging remains usable even if the cursor moves outside while the button stays held.
+4. Existing right-click toggle behavior on the drag handle and Escape-to-close behavior are unchanged.
+5. No bar settings, SavedVariables, equip behavior, localization, author UI or publication metadata changed.
