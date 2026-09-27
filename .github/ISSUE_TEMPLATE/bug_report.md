@@ -18,4 +18,3 @@ about: Report a Legion 7.3.5 compatibility problem
 **Lua/BugGrabber error (if any)**
 
 **Additional context/screenshots**
-
